@@ -31,11 +31,16 @@ galleryContainer.addEventListener('click', onImageClick)
 
 function onImageClick(event) {
     if (event.target.nodeName === "IMG") {
-        const instance = basicLightbox.create(`
-        <img src="${event.target.dataset.source}" width="800" height="600">
-    `,)
+
+      const instance = basicLightbox.create(`
+      <img src="${event.target.dataset.source}" width="800" height="600">
+  `, {
+        onShow: () => document.addEventListener('keydown', event => { if (event.key === "Escape") {instance.close()}}),
+        onClose: () => document.removeEventListener('keydown', event => { if (event.key === "Escape") {instance.close()}})
+      })
+
     instance.show();
-    document.addEventListener('keydown', event => { if (event.key === "Escape") {instance.close()}})
+  
     }
     event.stopPropagation();
 }
